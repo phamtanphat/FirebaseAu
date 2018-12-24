@@ -19,7 +19,7 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnDangnhap, btnDangky , btnCapnhat , btnXacthuc;
+    Button btnDangnhap, btnDangky , btnCapnhat , btnXacthuc , btnSetPassword;
     EditText edtEmail, edtPassword;
     String email, password = "";
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         edtEmail = findViewById(R.id.edittextEmail);
         edtPassword = findViewById(R.id.edittextPassword);
         btnXacthuc = findViewById(R.id.buttonXacthuc);
+        btnSetPassword = findViewById(R.id.buttonSetPassword);
 
         btnDangky.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,6 +117,28 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             });
                 }
+            }
+        });
+        btnSetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                String newPassword = "456789";
+
+                if (user != null){
+                    user.updatePassword(newPassword)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(MainActivity.this, "Cập nhật mật khẩu thành công!!", Toast.LENGTH_SHORT).show();
+                                    }else {
+                                        Toast.makeText(MainActivity.this, "Thất bại", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                }
+
             }
         });
     }
